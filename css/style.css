@@ -1,0 +1,207 @@
+:root {
+  --bg: #19191b;
+  --page: #e4e4e9;
+  --num: #505052;
+  --fn: #d4d4d2;
+  --fn-text: #1c1c1e;
+  --orange: #ff9500;
+  --white: #ffffff;
+  --muted: #8e8e93;
+  --ratio: 215 / 463; /* matches the reference design */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: 'Poppins', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--page);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.stage {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+/* The calculator keeps the reference aspect ratio and scales everything inside it
+   with container units (cqw), so it stays pixel-proportional at any size. */
+.calc {
+  container-type: inline-size;
+  width: min(100%, 380px, calc((100dvh - 24px) * 215 / 463));
+  aspect-ratio: var(--ratio);
+  background: var(--bg);
+  border-radius: 20px;
+  box-shadow: 0 2cqw 6cqw rgba(0, 0, 0, .25);
+  position: relative;
+  overflow: hidden;
+ }
+
+ .body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 7cqw 9.3cqw 11cqw;
+ }
+
+ /* ---------- top (history icon + last two calculations) ---------- */
+ .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 21cqw;
+ }
+
+ .hist-btn {
+  width: 8cqw; height: 8cqw;
+  margin-top: 1cqw;
+  background: none; border: 0;
+  color: var(--white);
+  cursor: pointer;
+  position: relative;
+  z-index: 5;
+  opacity: .95;
+ }
+ .hist-btn svg { width: 100%; height: 100%; display: block; }
+
+ .mini {
+  text-align: right;
+  font-size: 3.4cqw;
+  line-height: 1.35;
+  padding-top: 1.5cqw;
+  max-width: 70%;
+  overflow: hidden;
+ }
+ .mini .m-expr { color: var(--muted); font-weight: 300; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+ .mini .m-res  { color: var(--white); font-weight: 400; margin-bottom: 4.6cqw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+ /* ---------- main display ---------- */
+.display {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  min-height: 0;
+  padding-bottom: 6cqw;
+  cursor: pointer;
+}
+
+.expr {
+  font-size: 6cqw;
+  font-weight: 300;
+  color: var(--muted);
+  min-height: 9cqw;
+  line-height: 9cqw;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: rtl;           /* keep the newest part visible when it overflows */
+  text-align: right;
+}
+.expr > span { direction: ltr; unicode-bidi: plaintext; }
+
+.result-wrap { width: 100%; display: flex; justify-content: flex-end; overflow: hidden; }
+.result {
+  font-size: 12.6cqw;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -.01em;
+  white-space: nowrap;
+  transform-origin: right center;
+}
+
+/* ---------- keypad ---------- */
+.keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 4.2cqw;
+  row-gap: 3.4cqw;
+}
+
+.key {
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 50%;
+  font-family: inherit;
+  font-size: 7.4cqw;
+  font-weight: 400;
+  color: var(--white);
+  background: var(--num);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: filter .12s ease, background-color .12s ease, color .12s ease, transform .08s ease;
+}
+.key:active { filter: brightness(1.35); transform: scale(.97); }
+
+.key.fn  { background: var(--fn); color: var(--fn-text); font-weight: 500; font-size: 6.6cqw; }
+.key.fn:active { filter: brightness(.85); }
+.key.op  { background: var(--orange); font-size: 9cqw; font-weight: 300; }
+.key.op:active { filter: brightness(1.2); }
+.key.op.active { background: var(--white); color: var(--orange); }
+
+.key.zero {
+  grid-column: span 2;
+  aspect-ratio: auto;
+  border-radius: 100cqw;
+}
+
+@media (hover: hover) {
+  .key.num:hover { filter: brightness(1.12); }
+  .key.fn:hover  { filter: brightness(.94); }
+  .key.op:hover:not(.active) { filter: brightness(1.08); }
+}
+
+.key:focus-visible, .hist-btn:focus-visible, .link:focus-visible {
+  outline: .6cqw solid rgba(255, 255, 255, .7);
+  outline-offset: .5cqw;
+}
+
+/* ---------- history panel ---------- */
+.panel {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: rgba(25, 25, 27, .98);
+  padding: 7cqw 9.3cqw 9cqw;
+  display: flex;
+  flex-direction: column;
+}
+.panel[hidden] { display: none; }
+
+.panel-head {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4cqw;
+  min-height: 10cqw;
+  font-size: 4.6cqw;
+  font-weight: 500;
+}
+.panel-head span { margin-right: auto; margin-left: 11cqw; }
+.link { background: none; border: 0; color: var(--orange); font: inherit; cursor: pointer; }
+
+#histList { list-style: none; overflow-y: auto; margin-top: 3cqw; flex: 1; scrollbar-width: none; }
+#histList::-webkit-scrollbar { display: none; }
+#histList li {
+  text-align: right;
+  padding: 3cqw 0;
+  border-bottom: .2cqw solid rgba(255, 255, 255, .08);
+  cursor: pointer;
+}
+#histList .h-expr { font-size: 3.8cqw; color: var(--muted); font-weight: 300; }
+#histList .h-res  { font-size: 6cqw; font-weight: 500; }
+#histList .empty  { color: var(--muted); text-align: center; border: 0; padding-top: 14cqw; font-size: 4cqw; cursor: default; }
+
+@media (prefers-reduced-motion: reduce) {
+  .key { transition: none; }
+}

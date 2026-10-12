@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="stage">
+    <div class="calc" id="calc">
+      <div class="body">
+
+        <header class="top">
+          <button class="hist-btn" id="histBtn" aria-label="History" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 3-6.7L3 8"/>
+              <path d="M3 3v5h5"/>
+              <path d="M12 7.5V12l3 2"/>
+            </svg>
+          </button>
+          <div class="mini" id="mini" aria-hidden="true"></div>
+        </header>
+
+        <section class="display" id="display" title="Tap to delete last digit">
+          <div class="expr" id="expr"></div>
+          <div class="result-wrap"><div class="result" id="result">0</div></div>
+        </section>
+
+        <section class="keys" id="keys">
+          <button class="key fn"  data-action="clear">AC</button>
+          <button class="key fn"  data-action="sign">+/-</button>
+          <button class="key fn"  data-action="percent">%</button>
+          <button class="key op"  data-action="op" data-value="÷">÷</button>
+
+          <button class="key num" data-action="digit" data-value="7">7</button>
+          <button class="key num" data-action="digit" data-value="8">8</button>
+          <button class="key num" data-action="digit" data-value="9">9</button>
+          <button class="key op"  data-action="op" data-value="×">×</button>
+
+          <button class="key num" data-action="digit" data-value="4">4</button>
+          <button class="key num" data-action="digit" data-value="5">5</button>
+          <button class="key num" data-action="digit" data-value="6">6</button>
+          <button class="key op"  data-action="op" data-value="−">−</button>
+
+          <button class="key num" data-action="digit" data-value="1">1</button>
+          <button class="key num" data-action="digit" data-value="2">2</button>
+          <button class="key num" data-action="digit" data-value="3">3</button>
+          <button class="key op"  data-action="op" data-value="+">+</button>
+
+          <button class="key num zero" data-action="digit" data-value="0">0</button>
+          <button class="key num" data-action="dot">.</button>
+          <button class="key op"  data-action="equals">=</button>
+        </section>
+
+        <aside class="panel" id="panel" hidden>
+          <div class="panel-head">
+            <span>History</span>
+            <button id="clearHist" class="link">Clear</button>
+          </div>
+          <ul id="histList"></ul>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+  <script src="js/custom.js"></script>
+</body>
+</html>
